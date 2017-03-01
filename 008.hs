@@ -7,4 +7,4 @@ slide len list
     | len <= length list    = take len list : slide len (tail list)
     | otherwise             = []
 
-main = print $ maximum $ map product $ slide 13 $ digits n
+main = print . maximum . map product . slide 13 $ digits n
