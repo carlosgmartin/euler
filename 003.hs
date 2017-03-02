@@ -1,4 +1,9 @@
-smallestFactor x = head [y | y <- [2..x], mod x y == 0]
+primes = 2 : sieve [3..] 4 primes where
+    sieve (n:ns) bound (p:ps)
+        | n < bound = n : sieve ns bound (p:ps)
+        | otherwise = sieve [m | m <- ns, mod m p /= 0] (head ps ^ 2) ps
+
+smallestFactor x = head [y | y <- primes, mod x y == 0]
 
 largestPrimeFactor x
     | y == x    = x
