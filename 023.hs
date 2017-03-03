@@ -9,8 +9,8 @@ primeFactors n = factor n primes where
         | mod n p == 0 = p:factor (div n p) (p:ps)
         | otherwise    = factor n ps
 
-sigma = product . map (succ . sum . zipWith (flip (^)) [1..]) . group . primeFactors
-aliquot n = sigma n - n
+sumDivisors = product . map (succ . sum . zipWith (flip (^)) [1..]) . group . primeFactors
+aliquot n = sumDivisors n - n
 abundant n = aliquot n > n
 
 limit = 28123

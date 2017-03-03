@@ -1,17 +1,15 @@
+import Data.List (group)
 
-primes = 2 : sieve [3..] 4 primes where
-    sieve (n:ns) bound (p:ps)
-        | n < bound = n : sieve ns bound (p:ps)
-        | otherwise = sieve [m | m <- ns, mod m p /= 0] (head ps^2) ps
+primes = 2:filter isPrime [3,5..]
+isPrime = null . tail . primeFactors
+primeFactors n = factor n primes where
+    factor n (p:ps)
+        | p * p > n    = [n]
+        | mod n p == 0 = p:factor (div n p) (p:ps)
+        | otherwise    = factor n ps
 
-factor n = factor' n 0 0 where
-    factor' n p a
-        | n == 1                    = [a]
-        | mod n (primes !! p) == 0  = factor' (div n (primes !! p)) p (succ a)
-        | otherwise                 = [a] ++ (factor' n (succ p) 0)
+countDivisors = product . map (succ . length) . group . primeFactors
 
-countDivisors n = product $ map succ $ factor n
-
-triangulars = scanl (+) 1 [2..]
+triangulars = scanl1 (+) [1..]
 
 main = print $ head [t | t <- triangulars, countDivisors t > 500]
